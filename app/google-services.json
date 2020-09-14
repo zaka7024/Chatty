@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "654422236484",
+    "firebase_url": "https://chatty-b2976.firebaseio.com",
+    "project_id": "chatty-b2976",
+    "storage_bucket": "chatty-b2976.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:654422236484:android:386d7aa1086464e7400b11",
+        "android_client_info": {
+          "package_name": "com.freshie.chatty"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "654422236484-46ds7bkkbbqee7ub8njh75rroti6abjg.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDa7wH1tSazZJSh8EtCVmpBKMPwQA5qj_U"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "654422236484-46ds7bkkbbqee7ub8njh75rroti6abjg.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
