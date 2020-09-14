@@ -6,7 +6,7 @@
     android:layout_height="wrap_content">
 
     <com.makeramen.roundedimageview.RoundedImageView
-        android:id="@+id/imageView"
+        android:id="@+id/sender_item_user_image"
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:layout_marginTop="16dp"
@@ -26,7 +26,7 @@
         android:layout_marginTop="16dp"
         android:contentDescription="backgrounrImage"
         android:scaleType="fitXY"
-        app:layout_constraintEnd_toStartOf="@+id/imageView"
+        app:layout_constraintEnd_toStartOf="@+id/sender_item_user_image"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:tint="#F3F3F7"
