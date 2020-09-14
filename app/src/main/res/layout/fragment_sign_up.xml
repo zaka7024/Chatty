@@ -48,6 +48,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
         android:text="Username"
+        android:textColor="@color/darkBlue"
         app:layout_constraintStart_toStartOf="@+id/textView2"
         app:layout_constraintTop_toBottomOf="@+id/textView2" />
 
@@ -82,6 +83,7 @@
         android:layout_marginTop="32dp"
         android:inputType="textEmailAddress"
         android:text="E-mail"
+        android:textColor="@color/darkBlue"
         app:layout_constraintStart_toStartOf="@+id/textView4"
         app:layout_constraintTop_toBottomOf="@+id/username_edittext" />
 
@@ -104,6 +106,7 @@
         android:layout_marginTop="32dp"
         android:inputType="textEmailAddress"
         android:text="password"
+        android:textColor="@color/darkBlue"
         app:layout_constraintStart_toStartOf="@+id/textView5"
         app:layout_constraintTop_toBottomOf="@+id/email_edittext" />
 

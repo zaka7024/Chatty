@@ -2,7 +2,7 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="wrap_content"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
     <com.makeramen.roundedimageview.RoundedImageView
@@ -48,21 +48,20 @@
         android:id="@+id/tans_messge_item_receiver"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
         android:text="Traslated Text"
         android:textColor="@color/design_default_color_on_secondary"
         android:textSize="14sp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/sender_item_user_image"
-        app:layout_constraintTop_toBottomOf="@+id/message_item_text" />
+        app:layout_constraintStart_toStartOf="@+id/message_item_text"
+        app:layout_constraintTop_toBottomOf="@+id/message_item_text"
+        app:layout_constraintVertical_bias="0.541" />
 
     <ImageView
         android:id="@+id/message_item_voice"
         android:layout_width="30dp"
         android:layout_height="30dp"
-        android:layout_marginTop="40dp"
-        android:layout_marginEnd="4dp"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="44dp"
+        app:layout_constraintEnd_toEndOf="@+id/imageView2"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toEndOf="@+id/tans_messge_item_receiver"
         app:layout_constraintTop_toTopOf="@+id/imageView2"
