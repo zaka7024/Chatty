@@ -51,7 +51,7 @@ class DiscoverFragment : Fragment() {
                 }
             }
         })
-
+        // work on authrizations issue
         // Create the google map and show the view
         if(mapView != null){
             mapView.onCreate(null)

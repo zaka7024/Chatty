@@ -17,6 +17,7 @@ class DiscoverViewModel : ViewModel(), OnMapReadyCallback {
         get() = _isMapReady
 
     @SuppressLint("MissingPermission")
+
     override fun onMapReady(_map: GoogleMap?) {
         map = _map!!
 
