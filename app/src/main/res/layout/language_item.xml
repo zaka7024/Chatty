@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:padding="8dp"
-    android:background="@color/gray">
+    android:background="@color/blue">
 
     <com.makeramen.roundedimageview.RoundedImageView
         android:id="@+id/language_item_flage"
