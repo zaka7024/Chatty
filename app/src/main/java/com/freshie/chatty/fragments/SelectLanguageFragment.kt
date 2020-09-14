@@ -9,11 +9,20 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.freshie.chatty.R
 import com.freshie.chatty.items.LanguageItem
 import com.freshie.chatty.models.Language
+import com.freshie.chatty.models.User
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.firestore.ktx.toObject
+import com.google.firebase.ktx.Firebase
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.GroupieViewHolder
 import kotlinx.android.synthetic.main.fragment_select_language.*
+import kotlinx.coroutines.tasks.await
 
 class SelectLanguageFragment : Fragment() {
+
+    private var firstLanguage: Language? = null
+    private var secondLanguage: Language? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -38,7 +47,8 @@ class SelectLanguageFragment : Fragment() {
         select_language_rv.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
 
         for(languageType in Language.values()){
-            adapter.add(LanguageItem(languageType.name, getLanguageIcon(languageType)))
+            adapter.add(LanguageItem(languageType.name, getLanguageIcon(languageType),
+                languageType, ::onLanguageItemSelected, requireContext()))
         }
     }
 
@@ -48,5 +58,31 @@ class SelectLanguageFragment : Fragment() {
             Language.English -> R.drawable.usa
             Language.France -> R.drawable.france
         }
+    }
+
+    fun onLanguageItemSelected(language: Language): Boolean{
+        if(firstLanguage == null){
+            firstLanguage = language
+            choose_language_text.text = "Choose The Target Language"
+            return true
+        }else if(secondLanguage == null) {
+            secondLanguage = language
+            return true
+        }else{
+            // Done
+            return false
+        }
+    }
+
+    private fun saveCurrentUserLanguages() {
+        //val user = getCurrentUser()
+    }
+
+    private suspend fun getCurrentUser(): User {
+        val db = Firebase.firestore
+        val auth = Firebase.auth
+        val doc = db.collection("users").whereEqualTo("id", auth.currentUser?.uid)
+            .limit(1).get().await()
+        return doc.first().toObject<User>()
     }
 }

@@ -7,7 +7,7 @@
     tools:context=".fragments.SelectLanguageFragment">
 
     <TextView
-        android:id="@+id/textView8"
+        android:id="@+id/choose_language_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
@@ -24,16 +24,16 @@
         android:id="@+id/editTextTextPersonName"
         android:layout_width="300dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="32dp"
         android:background="@drawable/rounded_bg"
         android:backgroundTint="@color/gray"
         android:ems="10"
         android:inputType="textPersonName"
         android:padding="8dp"
         android:text="Name"
-        app:layout_constraintEnd_toEndOf="@+id/textView8"
-        app:layout_constraintStart_toStartOf="@+id/textView8"
-        app:layout_constraintTop_toBottomOf="@+id/textView8" />
+        app:layout_constraintEnd_toEndOf="@+id/choose_language_text"
+        app:layout_constraintStart_toStartOf="@+id/choose_language_text"
+        app:layout_constraintTop_toBottomOf="@+id/choose_language_text" />
 
     <ImageView
         android:id="@+id/imageView"
@@ -49,9 +49,7 @@
         android:id="@+id/select_language_rv"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginStart="8dp"
         android:layout_marginTop="16dp"
-        android:layout_marginEnd="8dp"
         android:layout_marginBottom="32dp"
         app:layout_constraintBottom_toTopOf="@+id/select_language_button"
         app:layout_constraintEnd_toEndOf="parent"
