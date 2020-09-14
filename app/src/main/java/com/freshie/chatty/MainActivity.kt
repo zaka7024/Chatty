@@ -26,16 +26,6 @@ class MainActivity : AppCompatActivity() {
         super.onStart()
 
         navController = findNavController(R.id.myNavHostFragment)
-
-        // Check if the user have signed or not
-        val auth = Firebase.auth
-        auth.signOut()
-        val currentUser = auth.currentUser
-
-        if(currentUser == null) {
-            navController.navigate(R.id.signUpFragment)
-        }
-
         Navigation.setViewNavController(bubbleTabBar, navController)
         setBubbleListeners()
     }
