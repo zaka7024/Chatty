@@ -24,6 +24,7 @@ class SelectLanguageFragment : Fragment() {
     private var firstLanguage: Language? = null
     private var secondLanguage: Language? = null
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
     }
