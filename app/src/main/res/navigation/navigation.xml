@@ -10,4 +10,28 @@
         android:name="com.freshie.chatty.fragments.HomeFragment"
         android:label="fragment_home"
         tools:layout="@layout/fragment_home" />
+    <fragment
+        android:id="@+id/signUpFragment"
+        android:name="com.freshie.chatty.fragments.SignUpFragment"
+        android:label="fragment_sign_up"
+        tools:layout="@layout/fragment_sign_up" />
+    <fragment
+        android:id="@+id/signInFragment"
+        android:name="com.freshie.chatty.fragments.SignInFragment"
+        android:label="SignInFragment" />
+    <fragment
+        android:id="@+id/discoverFragment"
+        android:name="com.freshie.chatty.fragments.DiscoverFragment"
+        android:label="fragment_dicscover"
+        tools:layout="@layout/fragment_dicscover" />
+    <fragment
+        android:id="@+id/chatFragment"
+        android:name="com.freshie.chatty.fragments.ChatFragment"
+        android:label="fragment_chat"
+        tools:layout="@layout/fragment_chat" />
+    <fragment
+        android:id="@+id/profileFragment"
+        android:name="com.freshie.chatty.fragments.ProfileFragment"
+        android:label="fragment_profile"
+        tools:layout="@layout/fragment_profile" />
 </navigation>
