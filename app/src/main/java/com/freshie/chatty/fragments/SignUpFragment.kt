@@ -69,7 +69,7 @@ class SignUpFragment : Fragment() {
     }
 
     private fun navigateToHome() {
-        findNavController().navigate(SignUpFragmentDirections.actionSignUpFragmentToHomeFragment())
+        findNavController().navigate(SignUpFragmentDirections.actionSignUpFragmentToSelectLanguage())
     }
 
     private fun navigateToSignIn() {

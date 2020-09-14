@@ -16,11 +16,11 @@
         android:label="fragment_sign_up"
         tools:layout="@layout/fragment_sign_up" >
         <action
-            android:id="@+id/action_signUpFragment_to_homeFragment"
-            app:destination="@id/homeFragment" />
-        <action
             android:id="@+id/action_signUpFragment_to_signInFragment"
             app:destination="@id/signInFragment" />
+        <action
+            android:id="@+id/action_signUpFragment_to_selectLanguage"
+            app:destination="@id/selectLanguage" />
     </fragment>
     <fragment
         android:id="@+id/signInFragment"
@@ -48,4 +48,9 @@
         android:name="com.freshie.chatty.fragments.ProfileFragment"
         android:label="fragment_profile"
         tools:layout="@layout/fragment_profile" />
+    <fragment
+        android:id="@+id/selectLanguage"
+        android:name="com.freshie.chatty.fragments.SelectLanguage"
+        android:label="fragment_select_language"
+        tools:layout="@layout/fragment_select_language" />
 </navigation>
