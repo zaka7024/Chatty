@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/blue"
-    tools:context=".fragments.SignUpFragment">
+    tools:context=".fragments.SignInFragment">
 
 
     <TextView
@@ -87,7 +87,7 @@
         app:layout_constraintTop_toBottomOf="@+id/email_edittext" />
 
     <Button
-        android:id="@+id/signup_btn"
+        android:id="@+id/sign_in_btn"
         android:layout_width="300dp"
         android:layout_height="wrap_content"
         android:layout_marginBottom="64dp"

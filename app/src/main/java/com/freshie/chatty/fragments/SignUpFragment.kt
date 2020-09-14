@@ -6,11 +6,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.navigation.fragment.findNavController
 import com.freshie.chatty.R
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import kotlinx.android.synthetic.main.fragment_sign_in.email_edittext
 import kotlinx.android.synthetic.main.fragment_sign_up.*
+import kotlinx.android.synthetic.main.fragment_sign_up.password_edittext
 
 class SignUpFragment : Fragment() {
 
@@ -30,7 +32,7 @@ class SignUpFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         // Sign up
-        signup_btn.setOnClickListener {
+        sign_up_btn.setOnClickListener {
             signUp()
         }
     }
@@ -51,10 +53,15 @@ class SignUpFragment : Fragment() {
             if (task.isSuccessful) {
                 Toast.makeText(context, "Authentication success.",
                     Toast.LENGTH_SHORT).show()
+                navigateToHome()
             } else {
                 Toast.makeText(context, "Authentication failed.",
                     Toast.LENGTH_SHORT).show()
             }
         }
+    }
+
+    private fun navigateToHome() {
+        findNavController().navigate(SignUpFragmentDirections.actionSignUpFragmentToHomeFragment())
     }
 }

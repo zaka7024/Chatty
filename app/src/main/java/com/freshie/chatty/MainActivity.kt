@@ -29,17 +29,16 @@ class MainActivity : AppCompatActivity() {
 
         // Check if the user have signed or not
         val auth = Firebase.auth
+        auth.signOut()
         val currentUser = auth.currentUser
 
-        if(currentUser == null){
-            bubbleTabBar.visibility = View.GONE
+        if(currentUser == null) {
             navController.navigate(R.id.signUpFragment)
         }
 
         Navigation.setViewNavController(bubbleTabBar, navController)
         setBubbleListeners()
     }
-
 
     // navigate to main fragments
     private fun setBubbleListeners() {

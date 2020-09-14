@@ -108,7 +108,7 @@
         app:layout_constraintTop_toBottomOf="@+id/email_edittext" />
 
     <Button
-        android:id="@+id/signup_btn"
+        android:id="@+id/sign_up_btn"
         android:layout_width="300dp"
         android:layout_height="wrap_content"
         android:layout_marginBottom="64dp"
