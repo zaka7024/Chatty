@@ -7,7 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import com.freshie.chatty.R
 
-class DicscoverFragment : Fragment() {
+class DiscoverFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
