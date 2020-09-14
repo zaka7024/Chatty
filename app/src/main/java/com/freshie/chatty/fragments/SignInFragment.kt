@@ -58,7 +58,7 @@ class SignInFragment : Fragment() {
             if (task.isSuccessful) {
                 Toast.makeText(context, "Authentication success.",
                     Toast.LENGTH_SHORT).show()
-
+                navigateToHome()
 
             } else {
                 Toast.makeText(context, "Authentication failed.",
@@ -69,5 +69,9 @@ class SignInFragment : Fragment() {
 
     private fun navigateToSignUp() {
         findNavController().navigate(SignInFragmentDirections.actionSignInFragmentToSignUpFragment())
+    }
+
+    private fun navigateToHome() {
+        findNavController().navigate(SignInFragmentDirections.actionSignInFragmentToHomeFragment())
     }
 }
