@@ -50,7 +50,7 @@
         tools:layout="@layout/fragment_profile" />
     <fragment
         android:id="@+id/selectLanguage"
-        android:name="com.freshie.chatty.fragments.SelectLanguage"
+        android:name="com.freshie.chatty.fragments.SelectLanguageFragment"
         android:label="fragment_select_language"
         tools:layout="@layout/fragment_select_language" />
 </navigation>
