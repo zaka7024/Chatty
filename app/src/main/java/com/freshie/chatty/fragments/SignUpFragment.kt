@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.navigation.fragment.findNavController
 import com.freshie.chatty.R
+import com.freshie.chatty.models.OnlineUser
 import com.freshie.chatty.models.User
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.ktx.firestore
@@ -83,6 +84,17 @@ class SignUpFragment : Fragment() {
         db.collection("users")
             .add(user).addOnSuccessListener {
                 navigateToHome()
+                saveUserOnlineState(true)
             }
+    }
+
+    private fun saveUserOnlineState(state: Boolean) {
+        val auth = Firebase.auth
+        if(auth.uid != null){
+            val db = Firebase.firestore
+            db.collection("online")
+                .document("${auth.uid}")
+                .update("state", state)
+        }
     }
 }

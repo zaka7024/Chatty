@@ -3,6 +3,7 @@ package com.freshie.chatty.fragments
 import android.Manifest
 import android.annotation.SuppressLint
 import android.content.pm.PackageManager
+import android.location.Location
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
@@ -14,6 +15,7 @@ import androidx.annotation.RequiresApi
 import androidx.lifecycle.ViewModelProviders
 import com.freshie.chatty.R
 import com.freshie.chatty.fragments.viewmodels.DiscoverViewModel
+import com.freshie.chatty.fragments.viewmodels.DiscoverViewModelFactory
 import com.google.android.gms.location.*
 import com.google.android.gms.maps.model.LatLng
 import kotlinx.android.synthetic.main.fragment_dicscover.*
@@ -41,7 +43,9 @@ class DiscoverFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val discoverViewModel = ViewModelProviders.of(this).get(DiscoverViewModel::class.java)
+        val discoverViewModelFactory  = DiscoverViewModelFactory(requireContext())
+        val discoverViewModel = ViewModelProviders.of(this, discoverViewModelFactory)
+            .get(DiscoverViewModel::class.java)
 
         // Get location permission
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireActivity())
@@ -50,7 +54,6 @@ class DiscoverFragment : Fragment() {
             if(isMapReady) {
                 if (checkLocationAccessPermission()) {
                     moveCameraToLastPosition(discoverViewModel)
-                    trackLastLocation(discoverViewModel)
                 }
             }
         })
@@ -68,6 +71,8 @@ class DiscoverFragment : Fragment() {
                 Log.i("onlines", it.toString())
             }
         })
+
+
     }
 
 
@@ -79,7 +84,10 @@ class DiscoverFragment : Fragment() {
             Timber.i("Last Location: $location")
             if(location != null){
                 val latLng = LatLng(location.latitude, location.longitude)
+                discoverViewModel.lastLocation.value = location
                 discoverViewModel.moveMapToLocation(latLng)
+                // Save last location
+                discoverViewModel.onGetLastLocation()
             }
         }
     }
@@ -95,19 +103,5 @@ class DiscoverFragment : Fragment() {
             return true
         }
         return false
-    }
-
-    @SuppressLint("MissingPermission")
-    private fun trackLastLocation(discoverViewModel: DiscoverViewModel) {
-        val locationRequest = LocationRequest()
-        locationRequest.priority = LocationRequest.PRIORITY_HIGH_ACCURACY
-        locationRequest.interval = 1000
-        fusedLocationClient.requestLocationUpdates(locationRequest, object : LocationCallback() {
-            override fun onLocationResult(location: LocationResult?) {
-                if (location != null) {
-                    discoverViewModel.lastLocation.value = location.lastLocation
-                }
-            }
-        }, null)
     }
 }

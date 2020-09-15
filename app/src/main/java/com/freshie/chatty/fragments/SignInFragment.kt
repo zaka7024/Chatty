@@ -9,8 +9,10 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.navigation.fragment.findNavController
 import com.freshie.chatty.R
+import com.freshie.chatty.models.OnlineUser
 import com.freshie.chatty.models.User
 import com.google.firebase.auth.ktx.auth
+import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import kotlinx.android.synthetic.main.fragment_sign_in.*
 import kotlinx.android.synthetic.main.fragment_sign_in.email_edittext
@@ -58,12 +60,23 @@ class SignInFragment : Fragment() {
             if (task.isSuccessful) {
                 Toast.makeText(context, "Authentication success.",
                     Toast.LENGTH_SHORT).show()
+                saveUserOnlineState(true)
                 navigateToHome()
 
             } else {
                 Toast.makeText(context, "Authentication failed.",
                     Toast.LENGTH_SHORT).show()
             }
+        }
+    }
+
+    private fun saveUserOnlineState(state: Boolean) {
+        val auth = Firebase.auth
+        if(auth.uid != null){
+            val db = Firebase.firestore
+            db.collection("online")
+                .document("${auth.uid}")
+                .update("state", state)
         }
     }
 

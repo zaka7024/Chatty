@@ -48,11 +48,10 @@ class MainActivity : AppCompatActivity() {
     private fun saveUserOnlineState(state: Boolean) {
         val auth = Firebase.auth
         if(auth.uid != null){
-            val onlineUser = OnlineUser(state, auth.uid.toString(), null)
             val db = Firebase.firestore
             db.collection("online")
                 .document("${auth.uid}")
-                .set(onlineUser)
+                .update("state", state)
         }
     }
 
