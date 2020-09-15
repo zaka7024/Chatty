@@ -7,7 +7,7 @@ import com.xwray.groupie.GroupieViewHolder
 import com.xwray.groupie.Item
 import kotlinx.android.synthetic.main.language_item.view.*
 
-class LanguageItem(var name :String , var icon:Int, val language: Language
+class LanguageItem  (var name :String , var icon:Int, val language: Language
 , var action: (Language)->Boolean, var context: Context) : Item<GroupieViewHolder>() {
     override fun bind(viewHolder: GroupieViewHolder, position: Int) {
         viewHolder.itemView.language_item_flage.setImageResource(icon)
