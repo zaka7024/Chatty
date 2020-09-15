@@ -37,12 +37,20 @@
         android:id="@+id/discoverFragment"
         android:name="com.freshie.chatty.fragments.DiscoverFragment"
         android:label="fragment_dicscover"
-        tools:layout="@layout/fragment_dicscover" />
+        tools:layout="@layout/fragment_dicscover" >
+        <action
+            android:id="@+id/action_discoverFragment_to_chatFragment"
+            app:destination="@id/chatFragment" />
+    </fragment>
     <fragment
         android:id="@+id/chatFragment"
         android:name="com.freshie.chatty.fragments.ChatFragment"
         android:label="fragment_chat"
-        tools:layout="@layout/fragment_chat" />
+        tools:layout="@layout/fragment_chat" >
+        <argument
+            android:name="receiver"
+            app:argType="string" />
+    </fragment>
     <fragment
         android:id="@+id/profileFragment"
         android:name="com.freshie.chatty.fragments.ProfileFragment"

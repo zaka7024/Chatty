@@ -13,6 +13,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.RequiresApi
 import androidx.lifecycle.ViewModelProviders
+import androidx.navigation.fragment.findNavController
 import com.freshie.chatty.R
 import com.freshie.chatty.fragments.viewmodels.DiscoverViewModel
 import com.freshie.chatty.fragments.viewmodels.DiscoverViewModelFactory
@@ -72,7 +73,12 @@ class DiscoverFragment : Fragment() {
             }
         })
 
-
+        discoverViewModel.onSelectPerson.observe(viewLifecycleOwner, {
+            if(it.first) {
+                findNavController().navigate(DiscoverFragmentDirections
+                    .actionDiscoverFragmentToChatFragment(it.second))
+            }
+        })
     }
 
 

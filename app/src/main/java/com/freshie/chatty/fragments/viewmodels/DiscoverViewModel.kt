@@ -46,7 +46,7 @@ class DiscoverViewModel(var context: Context) : ViewModel(), OnMapReadyCallback,
     val isMapReady: LiveData<Boolean>
         get() = _isMapReady
 
-    val onSelectPerson: MutableLiveData<Boolean> = MutableLiveData()
+    var onSelectPerson: MutableLiveData<Pair<Boolean, String>> = MutableLiveData()
 
     private val markers: MutableList<Marker> = mutableListOf()
 
@@ -59,6 +59,7 @@ class DiscoverViewModel(var context: Context) : ViewModel(), OnMapReadyCallback,
         map = _map!!
 
         map.isMyLocationEnabled = false
+        map.setOnMarkerClickListener(this)
         map.uiSettings.isCompassEnabled = false
         _isMapReady.value = true
 
@@ -138,7 +139,7 @@ class DiscoverViewModel(var context: Context) : ViewModel(), OnMapReadyCallback,
         marker.showInfoWindow()
 
         // Decide to chat with this person
-        onSelectPerson.value = true
+        onSelectPerson.value = Pair(true, onlineUser.id)
 
         return false
     }
