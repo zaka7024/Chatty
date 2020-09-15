@@ -16,7 +16,6 @@ class ChatSenderItem(var message: Message, var translator: Translator) :Item<Gro
         viewHolder.itemView.message_item_text.text = message.text
 
         var conditions = DownloadConditions.Builder()
-            .requireWifi()
             .build()
         translator.downloadModelIfNeeded(conditions)
             .addOnSuccessListener {

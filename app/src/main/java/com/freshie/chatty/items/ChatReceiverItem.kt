@@ -17,7 +17,6 @@ class ChatReceiverItem(var message: Message, var translator: Translator): Item<G
         viewHolder.itemView.message_item_receiver_text.text = message.text
 
         var conditions = DownloadConditions.Builder()
-            .requireWifi()
             .build()
         translator.downloadModelIfNeeded(conditions)
             .addOnSuccessListener {

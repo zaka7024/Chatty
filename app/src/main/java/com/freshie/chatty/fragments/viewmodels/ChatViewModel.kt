@@ -1,15 +1,21 @@
 package com.freshie.chatty.fragments.viewmodels
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.freshie.chatty.models.Language
 import com.freshie.chatty.models.Message
+import com.freshie.chatty.models.User
 import com.google.firebase.auth.ktx.auth
+import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.firestore.ktx.toObject
 import com.google.firebase.ktx.Firebase
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
+import kotlinx.coroutines.withContext
 
 class ChatViewModel: ViewModel() {
     val receiverId: MutableLiveData<String> = MutableLiveData()
@@ -17,11 +23,68 @@ class ChatViewModel: ViewModel() {
     val chatMessages: LiveData<MutableList<Message>>
         get() = _chatMessages
 
+    private val _sourceLanguage: MutableLiveData<Language> = MutableLiveData()
+    val sourceLanguage: LiveData<Language>
+        get() = _sourceLanguage
+
+    private val _targetLanguage: MutableLiveData<Language> = MutableLiveData()
+    val targetLanguage: LiveData<Language>
+        get() = _targetLanguage
+
+    private val _friendUser: MutableLiveData<User> = MutableLiveData()
+    val friendUser: LiveData<User>
+        get() = _friendUser
+
+    private val _currentUser: MutableLiveData<User> = MutableLiveData()
+    val currentUser: LiveData<User>
+        get() = _currentUser
+
     init {
+         getUser()
+    }
+
+    private fun getUser() {
+        GlobalScope.launch {
+            withContext(Dispatchers.Main) {
+                _currentUser.value = getCurrentUser()
+                setSourceLanguage(_currentUser.value?.motherLanguage!!)
+            }
+        }
     }
 
     fun setReceiverId(id: String){
         receiverId.value = id
+
+        // get the friend user
+
+        GlobalScope.launch {
+            withContext(Dispatchers.Main) {
+                _friendUser.value = getFriendUser()
+                setTargetLanguage(_friendUser.value?.motherLanguage!!)
+            }
+        }
+    }
+
+    private fun setSourceLanguage(language: Language) {
+        _sourceLanguage.value = language
+    }
+
+    private fun setTargetLanguage(language: Language) {
+        _targetLanguage.value = language
+    }
+
+    private suspend fun getCurrentUser(): User?{
+        val db = Firebase.firestore
+        val id = Firebase.auth.currentUser?.uid
+        return db.collection("users").document(id.toString())
+            .get().await().toObject<User>()
+    }
+
+    private suspend fun getFriendUser(): User?{
+        val db = Firebase.firestore
+        val id = receiverId.value
+        return db.collection("users").document(id.toString())
+            .get().await().toObject<User>()
     }
 
     fun sendMessage(text: String) {
@@ -41,7 +104,7 @@ class ChatViewModel: ViewModel() {
 
         val db = Firebase.firestore
         db.collection("messages").document("$fromId")
-            .collection("$toId").addSnapshotListener { docs, e ->
+            .collection("$toId").orderBy("timestamp", Query.Direction.ASCENDING).addSnapshotListener { docs, e ->
 
             if (e != null) {
                 return@addSnapshotListener
@@ -55,9 +118,6 @@ class ChatViewModel: ViewModel() {
                 }
 
                 _chatMessages.value = messagesList
-
-                //val message = snapshot.toObject<Message>()
-                //_chatMessages.value?.add(message!!)
             }
         }
     }

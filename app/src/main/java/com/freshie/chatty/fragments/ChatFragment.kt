@@ -1,6 +1,7 @@
 package com.freshie.chatty.fragments
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -19,7 +20,6 @@ import com.google.mlkit.nl.translate.TranslatorOptions
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.GroupieViewHolder
 import kotlinx.android.synthetic.main.fragment_chat.*
-
 
 class ChatFragment : Fragment() {
     private val adapter = GroupAdapter<GroupieViewHolder>()
@@ -50,6 +50,14 @@ class ChatFragment : Fragment() {
             .build()
         val translator = Translation.getClient(options)
 
+        // test
+        chatViewModel.sourceLanguage.observe(viewLifecycleOwner, {
+            Log.i("chat", "source lang: $it")
+        })
+
+        chatViewModel.targetLanguage.observe(viewLifecycleOwner, {
+            Log.i("chat", "target  lang: $it")
+        })
 
 
         // Set receiver id
@@ -68,6 +76,7 @@ class ChatFragment : Fragment() {
         }
 
         initChatRv()
+
         val uid = Firebase.auth.uid
         // Listen to the chat messages
         chatViewModel.chatMessages.observe(viewLifecycleOwner, {

@@ -87,12 +87,8 @@ class DiscoverViewModel(var context: Context) : ViewModel(), OnMapReadyCallback,
         val auth = Firebase.auth
         val docs = db.collection("online")
             .document("${auth.currentUser?.uid}")
-        docs.update("lat", location.latitude).addOnSuccessListener {
-            Log.i("discover", "UPDATED")
-        }.addOnFailureListener {
-            Log.i("discover", "CAN NOT UPDATE")
-        }
 
+        docs.update("lat", location.latitude)
         docs.update("lng", location.longitude)
     }
 
