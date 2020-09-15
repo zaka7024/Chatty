@@ -32,7 +32,8 @@ class HomeFragment : Fragment() {
         val currentUser = auth.currentUser
 
         // test
-        auth.signOut()
+        // TODO:: Remove this
+        //auth.signOut()
 
         if(currentUser == null) {
             findNavController().navigate(R.id.signUpFragment)

@@ -5,6 +5,7 @@ import android.annotation.SuppressLint
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -13,9 +14,10 @@ import androidx.annotation.RequiresApi
 import androidx.lifecycle.ViewModelProviders
 import com.freshie.chatty.R
 import com.freshie.chatty.fragments.viewmodels.DiscoverViewModel
-import com.google.android.gms.location.FusedLocationProviderClient
-import com.google.android.gms.location.LocationServices
+import com.google.android.gms.location.*
+import com.google.android.gms.maps.model.LatLng
 import kotlinx.android.synthetic.main.fragment_dicscover.*
+import timber.log.Timber
 import java.util.Observer
 
 class DiscoverFragment : Fragment() {
@@ -47,16 +49,38 @@ class DiscoverFragment : Fragment() {
         discoverViewModel.isMapReady.observe(viewLifecycleOwner,  {isMapReady ->
             if(isMapReady) {
                 if (checkLocationAccessPermission()) {
-
+                    moveCameraToLastPosition(discoverViewModel)
+                    trackLastLocation(discoverViewModel)
                 }
             }
         })
-        // work on authrizations issue
+
         // Create the google map and show the view
         if(mapView != null){
             mapView.onCreate(null)
             mapView.getMapAsync(discoverViewModel)
             mapView.onResume()
+        }
+
+        // test
+        discoverViewModel.onlineUsers.observe(viewLifecycleOwner, {
+            if(it != null){
+                Log.i("onlines", it.toString())
+            }
+        })
+    }
+
+
+    @SuppressLint("MissingPermission")
+    // Move the camera to the last user position
+    private fun moveCameraToLastPosition(discoverViewModel: DiscoverViewModel) {
+        // Get last user location
+        fusedLocationClient.lastLocation.addOnSuccessListener(requireActivity()) { location ->
+            Timber.i("Last Location: $location")
+            if(location != null){
+                val latLng = LatLng(location.latitude, location.longitude)
+                discoverViewModel.moveMapToLocation(latLng)
+            }
         }
     }
 
@@ -73,4 +97,17 @@ class DiscoverFragment : Fragment() {
         return false
     }
 
+    @SuppressLint("MissingPermission")
+    private fun trackLastLocation(discoverViewModel: DiscoverViewModel) {
+        val locationRequest = LocationRequest()
+        locationRequest.priority = LocationRequest.PRIORITY_HIGH_ACCURACY
+        locationRequest.interval = 1000
+        fusedLocationClient.requestLocationUpdates(locationRequest, object : LocationCallback() {
+            override fun onLocationResult(location: LocationResult?) {
+                if (location != null) {
+                    discoverViewModel.lastLocation.value = location.lastLocation
+                }
+            }
+        }, null)
+    }
 }
