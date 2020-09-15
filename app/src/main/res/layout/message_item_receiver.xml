@@ -16,7 +16,7 @@
         app:layout_constraintTop_toTopOf="parent"
         app:riv_mutate_background="true"
         app:riv_oval="true"
-        tools:src="@tools:sample/avatars" />
+        android:src="@drawable/usa" />
 
     <ImageView
         android:id="@+id/imageView2"

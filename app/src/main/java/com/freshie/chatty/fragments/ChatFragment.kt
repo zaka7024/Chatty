@@ -5,7 +5,16 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.ViewModelProviders
+import androidx.lifecycle.ViewModelStores
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.freshie.chatty.R
+import com.freshie.chatty.fragments.viewmodels.ChatViewModel
+import com.freshie.chatty.items.ChatReceiverItem
+import com.freshie.chatty.items.ChatSenderItem
+import com.xwray.groupie.GroupAdapter
+import com.xwray.groupie.GroupieViewHolder
+import kotlinx.android.synthetic.main.fragment_chat.*
 
 class ChatFragment : Fragment() {
 
@@ -19,5 +28,41 @@ class ChatFragment : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_chat, container, false)
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        val args = ChatFragmentArgs.fromBundle(requireArguments())
+        val chatViewModel = ViewModelProviders.of(this)
+            .get(ChatViewModel::class.java)
+
+        // Set receiver id
+        chatViewModel.receiverId.value = args.receiver
+
+        // send a message
+        chat_send_icon.setOnClickListener {
+            val text = chat_edittext.text.toString()
+
+            if(text.isEmpty()) {
+                // TODO::
+            }
+            chatViewModel.sendMessage(text)
+        }
+
+        initChatRv()
+
+    }
+
+    private fun initChatRv(){
+        val adapter = GroupAdapter<GroupieViewHolder>()
+        chat_rv.adapter = adapter
+        chat_rv.layoutManager= LinearLayoutManager(context,LinearLayoutManager.VERTICAL,false)
+
+        adapter.add(ChatReceiverItem())
+        adapter.add(ChatSenderItem())
+        adapter.add(ChatReceiverItem())
+        adapter.add(ChatSenderItem())
+
     }
 }
