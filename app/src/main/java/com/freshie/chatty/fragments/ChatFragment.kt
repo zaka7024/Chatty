@@ -17,7 +17,7 @@ import com.xwray.groupie.GroupieViewHolder
 import kotlinx.android.synthetic.main.fragment_chat.*
 
 class ChatFragment : Fragment() {
-
+    private val adapter = GroupAdapter<GroupieViewHolder>()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
     }
@@ -38,7 +38,8 @@ class ChatFragment : Fragment() {
             .get(ChatViewModel::class.java)
 
         // Set receiver id
-        chatViewModel.receiverId.value = args.receiver
+        chatViewModel.setReceiverId(args.receiver)
+        chatViewModel.getChatMessages()
 
         // send a message
         chat_send_icon.setOnClickListener {
@@ -48,14 +49,22 @@ class ChatFragment : Fragment() {
                 // TODO::
             }
             chatViewModel.sendMessage(text)
+            chat_edittext.text.clear()
         }
 
         initChatRv()
 
+        // Listen to the chat messages
+        chatViewModel.chatMessages.observe(viewLifecycleOwner, {
+            adapter.clear()
+            it.forEach {
+                message ->
+                adapter.add(ChatSenderItem())
+            }
+        })
     }
 
     private fun initChatRv(){
-        val adapter = GroupAdapter<GroupieViewHolder>()
         chat_rv.adapter = adapter
         chat_rv.layoutManager= LinearLayoutManager(context,LinearLayoutManager.VERTICAL,false)
 
