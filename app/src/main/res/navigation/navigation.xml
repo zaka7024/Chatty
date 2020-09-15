@@ -52,5 +52,9 @@
         android:id="@+id/selectLanguage"
         android:name="com.freshie.chatty.fragments.SelectLanguageFragment"
         android:label="fragment_select_language"
-        tools:layout="@layout/fragment_select_language" />
+        tools:layout="@layout/fragment_select_language" >
+        <action
+            android:id="@+id/action_selectLanguage_to_homeFragment"
+            app:destination="@id/homeFragment" />
+    </fragment>
 </navigation>

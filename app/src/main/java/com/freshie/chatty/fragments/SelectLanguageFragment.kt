@@ -1,29 +1,24 @@
 package com.freshie.chatty.fragments
 
+import android.content.res.ColorStateList
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.freshie.chatty.R
+import com.freshie.chatty.fragments.viewmodels.SelectLanguageViewModel
 import com.freshie.chatty.items.LanguageItem
 import com.freshie.chatty.models.Language
-import com.freshie.chatty.models.User
-import com.google.firebase.auth.ktx.auth
-import com.google.firebase.firestore.ktx.firestore
-import com.google.firebase.firestore.ktx.toObject
-import com.google.firebase.ktx.Firebase
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.GroupieViewHolder
 import kotlinx.android.synthetic.main.fragment_select_language.*
-import kotlinx.coroutines.tasks.await
 
 class SelectLanguageFragment : Fragment() {
-
-    private var firstLanguage: Language? = null
-    private var secondLanguage: Language? = null
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -39,17 +34,42 @@ class SelectLanguageFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        initLanguagesRv()
+        val selectLanguageViewModel = ViewModelProviders.of(this)
+            .get(SelectLanguageViewModel::class.java)
+
+        initLanguagesRv(selectLanguageViewModel)
+
+        // change the text
+        selectLanguageViewModel.firstLanguage.observe(viewLifecycleOwner, Observer {
+            firstLanguage ->
+            if(firstLanguage != null){
+                choose_language_text.text = "Choose The Target Language"
+            }
+        })
+
+        selectLanguageViewModel.secondLanguage.observe(viewLifecycleOwner, Observer {
+            secondLanguage ->
+            if(secondLanguage != null){
+                select_language_button.isEnabled = true
+                select_language_button.backgroundTintList =
+                    ColorStateList.valueOf(resources.getColor(R.color.darkBlue));
+            }
+        })
+
+        select_language_button.setOnClickListener {
+            selectLanguageViewModel.saveCurrentUserLanguages()
+            findNavController().navigate(SelectLanguageFragmentDirections.actionSelectLanguageToHomeFragment())
+        }
     }
 
-    private fun initLanguagesRv() {
+    private fun initLanguagesRv(selectLanguageViewModel: SelectLanguageViewModel) {
         val adapter = GroupAdapter<GroupieViewHolder>()
         select_language_rv.adapter = adapter
         select_language_rv.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
 
         for(languageType in Language.values()){
             adapter.add(LanguageItem(languageType.name, getLanguageIcon(languageType),
-                languageType, ::onLanguageItemSelected, requireContext()))
+                languageType, selectLanguageViewModel::onLanguageItemSelected, requireContext()))
         }
     }
 
@@ -59,31 +79,5 @@ class SelectLanguageFragment : Fragment() {
             Language.English -> R.drawable.usa
             Language.France -> R.drawable.france
         }
-    }
-
-    fun onLanguageItemSelected(language: Language): Boolean{
-        if(firstLanguage == null){
-            firstLanguage = language
-            choose_language_text.text = "Choose The Target Language"
-            return true
-        }else if(secondLanguage == null) {
-            secondLanguage = language
-            return true
-        }else{
-            // Done
-            return false
-        }
-    }
-
-    private fun saveCurrentUserLanguages() {
-        //val user = getCurrentUser()
-    }
-
-    private suspend fun getCurrentUser(): User {
-        val db = Firebase.firestore
-        val auth = Firebase.auth
-        val doc = db.collection("users").whereEqualTo("id", auth.currentUser?.uid)
-            .limit(1).get().await()
-        return doc.first().toObject<User>()
     }
 }
