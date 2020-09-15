@@ -1,12 +1,11 @@
 package com.freshie.chatty.fragments
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
-import androidx.lifecycle.ViewModelStores
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.freshie.chatty.R
 import com.freshie.chatty.fragments.viewmodels.ChatViewModel
@@ -14,9 +13,13 @@ import com.freshie.chatty.items.ChatReceiverItem
 import com.freshie.chatty.items.ChatSenderItem
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
+import com.google.mlkit.nl.translate.TranslateLanguage
+import com.google.mlkit.nl.translate.Translation
+import com.google.mlkit.nl.translate.TranslatorOptions
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.GroupieViewHolder
 import kotlinx.android.synthetic.main.fragment_chat.*
+
 
 class ChatFragment : Fragment() {
     private val adapter = GroupAdapter<GroupieViewHolder>()
@@ -39,6 +42,16 @@ class ChatFragment : Fragment() {
         val chatViewModel = ViewModelProviders.of(this)
             .get(ChatViewModel::class.java)
 
+        // Translator
+        // Create an English-Arabic translator:
+        val options = TranslatorOptions.Builder()
+            .setSourceLanguage(TranslateLanguage.ENGLISH)
+            .setTargetLanguage(TranslateLanguage.ARABIC)
+            .build()
+        val translator = Translation.getClient(options)
+
+
+
         // Set receiver id
         chatViewModel.setReceiverId(args.receiver)
         chatViewModel.getChatMessages()
@@ -59,12 +72,11 @@ class ChatFragment : Fragment() {
         // Listen to the chat messages
         chatViewModel.chatMessages.observe(viewLifecycleOwner, {
             adapter.clear()
-            it.forEach {
-                message ->
-                if(message.fromId == uid){
-                    adapter.add(ChatSenderItem(message))
-                }else{
-                    adapter.add(ChatReceiverItem(message))
+            it.forEach { message ->
+                if (message.fromId == uid) {
+                    adapter.add(ChatSenderItem(message, translator))
+                } else {
+                    adapter.add(ChatReceiverItem(message, translator))
                 }
             }
         })
@@ -72,6 +84,6 @@ class ChatFragment : Fragment() {
 
     private fun initChatRv(){
         chat_rv.adapter = adapter
-        chat_rv.layoutManager= LinearLayoutManager(context,LinearLayoutManager.VERTICAL,false)
+        chat_rv.layoutManager= LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
     }
 }

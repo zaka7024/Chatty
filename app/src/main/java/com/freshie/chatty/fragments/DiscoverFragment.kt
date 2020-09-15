@@ -90,10 +90,9 @@ class DiscoverFragment : Fragment() {
             Timber.i("Last Location: $location")
             if(location != null){
                 val latLng = LatLng(location.latitude, location.longitude)
-                discoverViewModel.lastLocation.value = location
                 discoverViewModel.moveMapToLocation(latLng)
                 // Save last location
-                discoverViewModel.onGetLastLocation()
+                discoverViewModel.onGetLastLocation(location)
             }
         }
     }

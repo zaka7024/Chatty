@@ -81,10 +81,11 @@ class SignUpFragment : Fragment() {
         val user = User(name, id)
         // Save the user to firebase
         val db = Firebase.firestore
-        db.collection("users")
-            .add(user)
+        db.collection("users").document(user.id)
+            .set(user)
         // add to online users
-        db.collection("online").add(OnlineUser(true, user.id, 0.0, 0.0))
+        db.collection("online").document(user.id)
+            .set(OnlineUser(true, user.id, 0.0, 0.0))
             .addOnSuccessListener {
                 navigateToHome()
             }

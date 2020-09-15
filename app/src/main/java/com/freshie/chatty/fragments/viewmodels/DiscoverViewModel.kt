@@ -77,16 +77,23 @@ class DiscoverViewModel(var context: Context) : ViewModel(), OnMapReadyCallback,
         map.setMapStyle(MapStyleOptions.loadRawResourceStyle(context, R.raw.map_style))
     }
 
-    fun onGetLastLocation() {
-        saveCurrentUserLocation()
+    fun onGetLastLocation(location: Location) {
+        saveCurrentUserLocation(location)
     }
 
-    fun saveCurrentUserLocation() {
+    private fun saveCurrentUserLocation(location: Location) {
+        // TODO:: SOLVE THIS PROBLEM
         val db = Firebase.firestore
         val auth = Firebase.auth
-        val docs = db.collection("online").document("${auth.uid}")
-        docs.update("lat", lastLocation.value?.latitude)
-        docs.update("lng", lastLocation.value?.longitude)
+        val docs = db.collection("online")
+            .document("${auth.currentUser?.uid}")
+        docs.update("lat", location.latitude).addOnSuccessListener {
+            Log.i("discover", "UPDATED")
+        }.addOnFailureListener {
+            Log.i("discover", "CAN NOT UPDATE")
+        }
+
+        docs.update("lng", location.longitude)
     }
 
     private suspend fun getOnlineUsers() {
