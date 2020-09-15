@@ -82,19 +82,11 @@ class SignUpFragment : Fragment() {
         // Save the user to firebase
         val db = Firebase.firestore
         db.collection("users")
-            .add(user).addOnSuccessListener {
+            .add(user)
+        // add to online users
+        db.collection("online").add(OnlineUser(true, user.id, 0.0, 0.0))
+            .addOnSuccessListener {
                 navigateToHome()
-                saveUserOnlineState(true)
             }
-    }
-
-    private fun saveUserOnlineState(state: Boolean) {
-        val auth = Firebase.auth
-        if(auth.uid != null){
-            val db = Firebase.firestore
-            db.collection("online")
-                .document("${auth.uid}")
-                .update("state", state)
-        }
     }
 }

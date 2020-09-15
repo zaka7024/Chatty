@@ -12,6 +12,8 @@ import com.freshie.chatty.R
 import com.freshie.chatty.fragments.viewmodels.ChatViewModel
 import com.freshie.chatty.items.ChatReceiverItem
 import com.freshie.chatty.items.ChatSenderItem
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.GroupieViewHolder
 import kotlinx.android.synthetic.main.fragment_chat.*
@@ -53,13 +55,17 @@ class ChatFragment : Fragment() {
         }
 
         initChatRv()
-
+        val uid = Firebase.auth.uid
         // Listen to the chat messages
         chatViewModel.chatMessages.observe(viewLifecycleOwner, {
             adapter.clear()
             it.forEach {
                 message ->
-                adapter.add(ChatSenderItem())
+                if(message.fromId == uid){
+                    adapter.add(ChatSenderItem(message))
+                }else{
+                    adapter.add(ChatReceiverItem(message))
+                }
             }
         })
     }
@@ -67,11 +73,5 @@ class ChatFragment : Fragment() {
     private fun initChatRv(){
         chat_rv.adapter = adapter
         chat_rv.layoutManager= LinearLayoutManager(context,LinearLayoutManager.VERTICAL,false)
-
-        adapter.add(ChatReceiverItem())
-        adapter.add(ChatSenderItem())
-        adapter.add(ChatReceiverItem())
-        adapter.add(ChatSenderItem())
-
     }
 }

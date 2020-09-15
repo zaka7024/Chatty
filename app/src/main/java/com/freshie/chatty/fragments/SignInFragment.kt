@@ -61,7 +61,6 @@ class SignInFragment : Fragment() {
                 Toast.makeText(context, "Authentication success.",
                     Toast.LENGTH_SHORT).show()
                 saveUserOnlineState(true)
-                navigateToHome()
 
             } else {
                 Toast.makeText(context, "Authentication failed.",
@@ -76,7 +75,9 @@ class SignInFragment : Fragment() {
             val db = Firebase.firestore
             db.collection("online")
                 .document("${auth.uid}")
-                .update("state", state)
+                .update("state", state).addOnSuccessListener {
+                    navigateToHome()
+                }
         }
     }
 

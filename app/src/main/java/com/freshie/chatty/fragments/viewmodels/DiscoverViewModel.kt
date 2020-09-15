@@ -78,23 +78,15 @@ class DiscoverViewModel(var context: Context) : ViewModel(), OnMapReadyCallback,
     }
 
     fun onGetLastLocation() {
-        scope.launch {
-            saveCurrentUserLocation()
-        }
+        saveCurrentUserLocation()
     }
 
-    suspend fun saveCurrentUserLocation() {
-        withContext(Dispatchers.Main) {
-            val db = Firebase.firestore
-            val auth = Firebase.auth
-            val docs = db.collection("online").whereEqualTo("id", auth.uid.toString())
-                .limit(1).get().await()
-                .documents
-            if (docs.size > 0) {
-                docs.first().reference.update("lat", lastLocation.value?.latitude)
-                docs.first().reference.update("lng", lastLocation.value?.longitude)
-            }
-        }
+    fun saveCurrentUserLocation() {
+        val db = Firebase.firestore
+        val auth = Firebase.auth
+        val docs = db.collection("online").document("${auth.uid}")
+        docs.update("lat", lastLocation.value?.latitude)
+        docs.update("lng", lastLocation.value?.longitude)
     }
 
     private suspend fun getOnlineUsers() {

@@ -33,7 +33,7 @@ class HomeFragment : Fragment() {
 
         // test
         // TODO:: Remove this
-        //auth.signOut()
+        auth.signOut()
 
         if(currentUser == null) {
             findNavController().navigate(R.id.signUpFragment)
