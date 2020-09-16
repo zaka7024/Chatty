@@ -114,4 +114,9 @@ class ChatFragment : Fragment() {
         chat_rv.adapter = adapter
         chat_rv.layoutManager= LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
     }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        translator.close()
+    }
 }

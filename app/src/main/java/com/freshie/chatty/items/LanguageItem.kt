@@ -24,9 +24,6 @@ class LanguageItem  (var name :String , var icon:Int, val language: Language
                 viewHolder.itemView.language_item_name.setTextColor(color)
             }
         }
-
-        YoYo.with(Techniques.SlideInUp).duration(400)
-            .playOn(viewHolder.itemView)
     }
 
     override fun getLayout(): Int {

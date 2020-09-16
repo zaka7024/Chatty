@@ -26,14 +26,10 @@ class ChatReceiverItem(var message: Message, var translator: Translator): Item<G
                         // Translation successful.
                         Log.i("chatItem", "translated: $translatedText")
                         viewHolder.itemView.message_receiver_item_translated_text.text = translatedText
-                        translator.close()
                     }
             }.addOnFailureListener {
                 translator.close()
             }
-        // Play animation
-        YoYo.with(Techniques.SlideInUp).duration(400)
-            .playOn(viewHolder.itemView)
     }
 
     override fun getLayout(): Int {

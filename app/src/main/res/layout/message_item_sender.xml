@@ -13,7 +13,7 @@
         android:layout_height="50dp"
         android:layout_marginStart="4dp"
         android:layout_marginTop="16dp"
-        android:src="@drawable/usa"
+        android:src="@drawable/iconfinder_profle_1055000"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:riv_mutate_background="true"
@@ -32,12 +32,4 @@
         app:layout_constraintStart_toEndOf="@+id/sender_item_user_image"
         app:layout_constraintTop_toTopOf="@+id/sender_item_user_image" />
 
-    <ImageView
-        android:id="@+id/message_sender_item_voice"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
-        app:srcCompat="@drawable/ic_baseline_volume_up_24"
-        app:tint="@color/darkBlue"
-        tools:layout_editor_absoluteX="163dp"
-        tools:layout_editor_absoluteY="42dp" />
 </androidx.constraintlayout.widget.ConstraintLayout>

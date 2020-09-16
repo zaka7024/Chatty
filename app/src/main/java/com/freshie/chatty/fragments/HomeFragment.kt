@@ -56,7 +56,7 @@ class HomeFragment : Fragment() {
         getMessages()
 
         // TODO:: Remove this
-        auth.signOut()
+        //auth.signOut()
     }
 
     private fun initHomeRv() {
@@ -86,6 +86,7 @@ class HomeFragment : Fragment() {
                 val message = snapshot.getValue(LastMessage::class.java)
                 lastMessageMap[snapshot.key] = message!!
                 refreshRv()
+                //tip.visibility = View.GONE
             }
 
             override fun onChildChanged(snapshot: DataSnapshot, previousChildName: String?) {

@@ -112,7 +112,7 @@
         android:textAlignment="center"
         android:textAllCaps="true"
         android:textColor="@color/white"
-        android:textSize="20sp"
+        android:textSize="16sp"
         android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="@+id/map_tip"
         app:layout_constraintEnd_toEndOf="parent"
