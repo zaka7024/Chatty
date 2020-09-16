@@ -9,14 +9,7 @@
         android:id="@+id/homeFragment"
         android:name="com.freshie.chatty.fragments.HomeFragment"
         android:label="fragment_home"
-        tools:layout="@layout/fragment_home" >
-        <action
-            android:id="@+id/action_homeFragment_to_profileFragment"
-            app:destination="@id/profileFragment" />
-        <action
-            android:id="@+id/action_homeFragment_to_discoverFragment"
-            app:destination="@id/discoverFragment" />
-    </fragment>
+        tools:layout="@layout/fragment_home" />
     <fragment
         android:id="@+id/signUpFragment"
         android:name="com.freshie.chatty.fragments.SignUpFragment"

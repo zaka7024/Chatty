@@ -19,6 +19,7 @@ import kotlinx.coroutines.withContext
 
 class ChatViewModel: ViewModel() {
     val receiverId: MutableLiveData<String> = MutableLiveData()
+
     private val _chatMessages: MutableLiveData<MutableList<Message>> = MutableLiveData()
     val chatMessages: LiveData<MutableList<Message>>
         get() = _chatMessages

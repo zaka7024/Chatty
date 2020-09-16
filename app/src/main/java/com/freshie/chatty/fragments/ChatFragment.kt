@@ -88,6 +88,7 @@ class ChatFragment : Fragment() {
                     adapter.add(ChatReceiverItem(message, translator))
                 }
             }
+            chat_rv.scrollToPosition(adapter.itemCount - 1)
         })
     }
 
