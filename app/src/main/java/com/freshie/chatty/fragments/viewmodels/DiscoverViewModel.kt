@@ -2,30 +2,32 @@ package com.freshie.chatty.fragments.viewmodels
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
+import android.graphics.Canvas
 import android.location.Location
-import android.util.Log
+import androidx.annotation.DrawableRes
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.freshie.chatty.R
+import com.freshie.chatty.fragments.SelectLanguageFragment.Companion.getLanguageIcon
 import com.freshie.chatty.models.OnlineUser
 import com.freshie.chatty.models.User
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
-import com.google.android.gms.maps.model.LatLng
-import com.google.android.gms.maps.model.MapStyleOptions
-import com.google.android.gms.maps.model.Marker
-import com.google.android.gms.maps.model.MarkerOptions
+import com.google.android.gms.maps.model.*
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.firestore.ktx.toObject
 import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.*
-import kotlinx.coroutines.tasks.await
+
 
 class DiscoverViewModel(var context: Context) : ViewModel(), OnMapReadyCallback,
-    GoogleMap.OnMarkerClickListener {
+    GoogleMap.OnMarkerClickListener, GoogleMap.OnInfoWindowClickListener {
 
     private val job = Job()
     private val scope = CoroutineScope(Dispatchers.Main + job)
@@ -60,6 +62,7 @@ class DiscoverViewModel(var context: Context) : ViewModel(), OnMapReadyCallback,
 
         map.isMyLocationEnabled = false
         map.setOnMarkerClickListener(this)
+        map.setOnInfoWindowClickListener(this)
         map.uiSettings.isCompassEnabled = false
         _isMapReady.value = true
 
@@ -82,7 +85,6 @@ class DiscoverViewModel(var context: Context) : ViewModel(), OnMapReadyCallback,
     }
 
     private fun saveCurrentUserLocation(location: Location) {
-        // TODO:: SOLVE THIS PROBLEM
         val db = Firebase.firestore
         val auth = Firebase.auth
         val docs = db.collection("online")
@@ -94,6 +96,9 @@ class DiscoverViewModel(var context: Context) : ViewModel(), OnMapReadyCallback,
 
     private suspend fun getOnlineUsers() {
             val db = Firebase.firestore
+            GlobalScope.launch {
+
+            }
             db.collection("online")
                 .whereEqualTo("state", true)
                 .addSnapshotListener { value, e ->
@@ -110,32 +115,44 @@ class DiscoverViewModel(var context: Context) : ViewModel(), OnMapReadyCallback,
                         if (onlineUser.id == Firebase.auth.uid) continue
 
 //                        // get user target language
-//                        val user = (db.collection("users")
-//                            .whereEqualTo("id", onlineUser.id).limit(1).get().await()
-//                            .documents.first().toObject<User>())?.targetLanguage
+                        val user = (db.collection("users")
+                            .whereEqualTo("id", onlineUser.id).limit(1).get()
+                            .addOnSuccessListener {
+                                val user = it.documents.first().toObject<User>()
+                                val onlineMotherLanguage = user?.motherLanguage
 
-                        // Draw marker
+                                val iconId = getLanguageIcon(onlineMotherLanguage!!)
+                                var bitmap = BitmapFactory.decodeResource(context.resources, iconId)
+                                bitmap = Bitmap.createScaledBitmap(bitmap, 100, 100, false)
+
+                                // Draw marker
+                                val latlng = LatLng(onlineUser.lat, onlineUser.lng)
+                                val marker = map.addMarker(
+                                    MarkerOptions().position(latlng)
+                                        .title(user.name)
+                                        .snippet("Native: ${user.motherLanguage?.name}, Target: ${user.targetLanguage?.name}")
+                                        .icon(
+                                            BitmapDescriptorFactory.fromBitmap(bitmap)
+                                        )
+                                )
+                                marker.tag = onlineUser
+                                markers.add(marker)
+
+                            })
                         users.add(onlineUser)
-                        val latlng = LatLng(onlineUser.lat, onlineUser.lng)
-                        val marker = map.addMarker(
-                            MarkerOptions().position(latlng)
-                                .title("Person")
-                        )
-                        marker.tag = onlineUser
-                        markers.add(marker)
                     }
                     _onlineUsers.value = users
                 }
-
     }
 
     override fun onMarkerClick(marker: Marker?): Boolean {
-        val onlineUser = marker?.tag as OnlineUser
-        marker.showInfoWindow()
-
-        // Decide to chat with this person
-        onSelectPerson.value = Pair(true, onlineUser.id)
-
+        marker?.showInfoWindow()
         return false
+    }
+
+    override fun onInfoWindowClick(marker: Marker?) {
+        // Decide to chat with this person
+        val onlineUser = marker?.tag as OnlineUser
+        onSelectPerson.value = Pair(true, onlineUser.id)
     }
 }

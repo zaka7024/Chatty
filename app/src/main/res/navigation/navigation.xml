@@ -9,7 +9,14 @@
         android:id="@+id/homeFragment"
         android:name="com.freshie.chatty.fragments.HomeFragment"
         android:label="fragment_home"
-        tools:layout="@layout/fragment_home" />
+        tools:layout="@layout/fragment_home" >
+        <action
+            android:id="@+id/action_homeFragment_to_profileFragment"
+            app:destination="@id/profileFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_discoverFragment"
+            app:destination="@id/discoverFragment" />
+    </fragment>
     <fragment
         android:id="@+id/signUpFragment"
         android:name="com.freshie.chatty.fragments.SignUpFragment"
@@ -40,7 +47,8 @@
         tools:layout="@layout/fragment_dicscover" >
         <action
             android:id="@+id/action_discoverFragment_to_chatFragment"
-            app:destination="@id/chatFragment" />
+            app:destination="@id/chatFragment"
+            app:popUpTo="@id/homeFragment" />
     </fragment>
     <fragment
         android:id="@+id/chatFragment"
@@ -50,6 +58,9 @@
         <argument
             android:name="receiver"
             app:argType="string" />
+        <action
+            android:id="@+id/action_chatFragment_to_discoverFragment2"
+            app:destination="@id/discoverFragment" />
     </fragment>
     <fragment
         android:id="@+id/profileFragment"

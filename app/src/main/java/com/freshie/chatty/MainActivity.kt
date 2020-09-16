@@ -1,23 +1,22 @@
 package com.freshie.chatty
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
-import android.view.View
+import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import androidx.navigation.findNavController
-import com.daimajia.androidanimations.library.Techniques
-import com.daimajia.androidanimations.library.YoYo
-import com.freshie.chatty.models.OnlineUser
+import androidx.navigation.ui.AppBarConfiguration
+import androidx.navigation.ui.NavigationUI
 import com.fxn.OnBubbleClickListener
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import kotlinx.android.synthetic.main.activity_main.*
 
+
 class MainActivity : AppCompatActivity() {
     private lateinit var navController: NavController
+    private lateinit var appBarConfiguration : AppBarConfiguration
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -28,6 +27,7 @@ class MainActivity : AppCompatActivity() {
         super.onStart()
 
         navController = findNavController(R.id.myNavHostFragment)
+        appBarConfiguration = AppBarConfiguration.Builder(navController.graph).build()
         Navigation.setViewNavController(bubbleTabBar, navController)
         setBubbleListeners()
 
@@ -59,7 +59,7 @@ class MainActivity : AppCompatActivity() {
     private fun setBubbleListeners() {
         bubbleTabBar.addBubbleListener(object : OnBubbleClickListener {
             override fun onBubbleClick(id: Int) {
-                when(id){
+                when (id) {
                     R.id.nav_search -> {
                         navController.navigate(R.id.discoverFragment)
                     }
@@ -72,5 +72,10 @@ class MainActivity : AppCompatActivity() {
                 }
             }
         })
+    }
+
+    override fun onSupportNavigateUp(): Boolean {
+        val navController = this.findNavController(R.id.myNavHostFragment)
+        return NavigationUI.navigateUp(navController, appBarConfiguration)
     }
 }

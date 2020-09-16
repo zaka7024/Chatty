@@ -73,11 +73,13 @@ class SelectLanguageFragment : Fragment() {
         }
     }
 
-    private fun getLanguageIcon(language: Language): Int{
-        return when (language) {
-            Language.Arabic -> R.drawable.ksa
-            Language.English -> R.drawable.usa
-            Language.France -> R.drawable.france
+    companion object {
+        fun getLanguageIcon(language: Language): Int{
+            return when (language) {
+                Language.Arabic -> R.drawable.ksa
+                Language.English -> R.drawable.usa
+                Language.France -> R.drawable.france
+            }
         }
     }
 }
