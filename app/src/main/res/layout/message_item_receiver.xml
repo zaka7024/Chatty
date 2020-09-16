@@ -23,6 +23,7 @@
         android:layout_height="wrap_content"
         android:text="Hi How Are You ?"
         android:textColor="@color/design_default_color_on_secondary"
+        android:textStyle="bold"
         app:layout_constraintEnd_toStartOf="@+id/sender_item_user_image"
         app:layout_constraintTop_toTopOf="@+id/sender_item_user_image" />
 
@@ -30,20 +31,11 @@
         android:id="@+id/message_receiver_item_translated_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="4dp"
+        android:layout_marginTop="8dp"
         android:text="Traslated Text"
         android:textColor="@color/design_default_color_on_secondary"
         android:textSize="14sp"
         app:layout_constraintEnd_toEndOf="@+id/message_item_receiver_text"
         app:layout_constraintTop_toBottomOf="@+id/message_item_receiver_text" />
 
-    <ImageView
-        android:id="@+id/message_receiver_item_voice"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
-        app:layout_constraintBottom_toBottomOf="@+id/message_receiver_item_translated_text"
-        app:layout_constraintEnd_toStartOf="@+id/message_receiver_item_translated_text"
-        app:layout_constraintTop_toTopOf="@+id/message_receiver_item_translated_text"
-        app:srcCompat="@drawable/ic_baseline_volume_up_24"
-        app:tint="@color/darkBlue" />
 </androidx.constraintlayout.widget.ConstraintLayout>

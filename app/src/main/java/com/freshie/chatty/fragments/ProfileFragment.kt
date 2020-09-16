@@ -8,7 +8,12 @@ import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProviders
 import com.freshie.chatty.R
 import com.freshie.chatty.fragments.viewmodels.ProfileViewModel
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
+import kotlinx.android.synthetic.main.fragment_dicscover.*
 import kotlinx.android.synthetic.main.fragment_profile.*
+import kotlinx.android.synthetic.main.fragment_profile.map_tip
+import kotlinx.android.synthetic.main.fragment_profile.map_tip_text
 
 class ProfileFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -24,8 +29,24 @@ class ProfileFragment : Fragment() {
 
     }
 
+    private fun hideAllViews() {
+        map_tip_text.visibility = View.VISIBLE
+        profile_image.visibility = View.INVISIBLE
+        profile_name.visibility = View.INVISIBLE
+        textView9.visibility = View.INVISIBLE
+        motehr_language.visibility = View.INVISIBLE
+        textView11.visibility = View.INVISIBLE
+        target_language.visibility = View.INVISIBLE
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        if (Firebase.auth.currentUser?.uid == null) {
+            map_tip.visibility = View.VISIBLE
+            hideAllViews()
+            return
+        }
 
         val profileViewModel = ViewModelProviders.of(this)
             .get(ProfileViewModel::class.java)

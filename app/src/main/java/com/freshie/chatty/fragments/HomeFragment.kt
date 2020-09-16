@@ -6,32 +6,28 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.navigation.NavController
-import androidx.navigation.Navigation
-import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
-import androidx.navigation.ui.AppBarConfiguration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.freshie.chatty.R
 import com.freshie.chatty.items.FriendChatItem
+import com.freshie.chatty.models.LastMessage
 import com.freshie.chatty.models.Message
-import com.fxn.OnBubbleClickListener
 import com.google.firebase.auth.ktx.auth
-import com.freshie.chatty.models.User
 import com.google.firebase.database.ChildEventListener
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
-import com.google.firebase.firestore.ktx.firestore
-import com.google.firebase.firestore.ktx.toObject
 import com.google.firebase.ktx.Firebase
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.GroupieViewHolder
+import kotlinx.android.synthetic.main.fragment_dicscover.*
 import kotlinx.android.synthetic.main.fragment_home.*
 
 class HomeFragment : Fragment() {
 
     private val adapter = GroupAdapter<GroupieViewHolder>()
+    var lastMessageMap = HashMap<String?, LastMessage>()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
     }
@@ -47,22 +43,20 @@ class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-
         // Check if the user have signed or not
         val auth = Firebase.auth
         val currentUser = auth.currentUser
 
-        // inits
-        initHomeRv()
-        getMessages()
-
-        // test
-        // TODO:: Remove this
-        //auth.signOut()
-
         if(currentUser == null) {
             findNavController().navigate(R.id.signUpFragment)
         }
+
+        // init
+        initHomeRv()
+        getMessages()
+
+        // TODO:: Remove this
+        auth.signOut()
     }
 
     private fun initHomeRv() {
@@ -70,17 +64,34 @@ class HomeFragment : Fragment() {
         home_rv.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
     }
 
+    private fun navigateToChatFragment(targetUserId: String) {
+        findNavController().navigate(HomeFragmentDirections
+            .actionHomeFragmentToChatFragment(targetUserId))
+    }
+
+    private fun refreshRv() {
+        adapter.clear()
+        lastMessageMap.forEach {
+            adapter.add(FriendChatItem(it.value, ::navigateToChatFragment))
+        }
+    }
+
     private fun getMessages() {
         val fromId = Firebase.auth.currentUser?.uid
         var ref = FirebaseDatabase.getInstance()
             .getReference("latest-messages/$fromId")
+
         ref.addChildEventListener(object: ChildEventListener{
             override fun onChildAdded(snapshot: DataSnapshot, previousChildName: String?) {
-
+                val message = snapshot.getValue(LastMessage::class.java)
+                lastMessageMap[snapshot.key] = message!!
+                refreshRv()
             }
 
             override fun onChildChanged(snapshot: DataSnapshot, previousChildName: String?) {
-
+                val message = snapshot.getValue(LastMessage::class.java)
+                lastMessageMap[snapshot.key] = message!!
+                refreshRv()
             }
 
             override fun onChildRemoved(snapshot: DataSnapshot) {

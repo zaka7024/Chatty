@@ -8,6 +8,8 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.daimajia.androidanimations.library.Techniques
+import com.daimajia.androidanimations.library.YoYo
 import com.freshie.chatty.R
 import com.freshie.chatty.fragments.viewmodels.ChatViewModel
 import com.freshie.chatty.items.ChatReceiverItem
@@ -49,9 +51,6 @@ class ChatFragment : Fragment() {
         // Set receiver id
             chatViewModel.receiverId.value = args.receiver
 
-        Log.i("chat", "Current user id: ${Firebase.auth.currentUser?.uid}")
-        Log.i("chat", "Target user id: ${args.receiver}")
-
         // Check if the two languages ready
         chatViewModel.targetLanguage.observe(viewLifecycleOwner, {
             targetLanguage ->
@@ -73,14 +72,14 @@ class ChatFragment : Fragment() {
             }
         })
 
-
         // send a message
         chat_send_icon.setOnClickListener {
             val text = chat_edittext.text.toString()
 
             if(text.isEmpty()) {
-                // TODO::
+                return@setOnClickListener
             }
+
             chatViewModel.sendMessage(text)
             chat_edittext.text.clear()
         }
@@ -94,7 +93,7 @@ class ChatFragment : Fragment() {
             adapter.clear()
             it.forEach { message ->
                 if (message.fromId == uid) {
-                    adapter.add(ChatSenderItem(message, translator))
+                    adapter.add(ChatSenderItem(message))
                 } else {
                     adapter.add(ChatReceiverItem(message, translator))
                 }

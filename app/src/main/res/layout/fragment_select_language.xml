@@ -11,7 +11,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
-        android:text="Choose The language"
+        android:text="Choose Your Mother language"
         android:textAlignment="center"
         android:textColor="@color/design_default_color_on_secondary"
         android:textSize="24sp"
@@ -20,42 +20,25 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <EditText
-        android:id="@+id/editTextTextPersonName"
-        android:layout_width="300dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
-        android:background="@drawable/rounded_bg"
-        android:backgroundTint="@color/gray"
-        android:ems="10"
-        android:inputType="textPersonName"
-        android:padding="8dp"
-        android:text="Name"
-        app:layout_constraintEnd_toEndOf="@+id/choose_language_text"
-        app:layout_constraintStart_toStartOf="@+id/choose_language_text"
-        app:layout_constraintTop_toBottomOf="@+id/choose_language_text" />
-
     <ImageView
         android:id="@+id/imageView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
         android:src="@drawable/ic_baseline_search_24"
-        app:layout_constraintBottom_toBottomOf="@+id/editTextTextPersonName"
-        app:layout_constraintEnd_toEndOf="@+id/editTextTextPersonName"
-        app:layout_constraintTop_toTopOf="@+id/editTextTextPersonName" />
+        tools:layout_editor_absoluteX="323dp"
+        tools:layout_editor_absoluteY="96dp" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/select_language_rv"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="32dp"
         android:layout_marginBottom="32dp"
         app:layout_constraintBottom_toTopOf="@+id/select_language_button"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextTextPersonName" />
+        app:layout_constraintTop_toBottomOf="@+id/choose_language_text" />
 
     <Button
         android:id="@+id/select_language_button"

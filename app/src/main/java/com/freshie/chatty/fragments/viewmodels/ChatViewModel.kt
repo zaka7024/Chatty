@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.freshie.chatty.models.Language
+import com.freshie.chatty.models.LastMessage
 import com.freshie.chatty.models.Message
 import com.freshie.chatty.models.User
 import com.google.firebase.auth.ktx.auth
@@ -101,10 +102,13 @@ class ChatViewModel: ViewModel() {
 
         db.collection("messages/$toId/$fromId").add(message)
 
+        val lastMessageTo = LastMessage(message.text, message.toId, _friendUser.value?.name!!)
+        val lastMessageFrom = LastMessage(message.text, message.fromId, _currentUser.value?.name!!)
+
         val lastTo = FirebaseDatabase.getInstance().getReference("latest-messages/$fromId/$toId")
-        val lastFrom = FirebaseDatabase.getInstance().getReference("latest-messages/$fromId/$toId")
-        lastTo.setValue(message)
-        lastFrom.setValue(message)
+        val lastFrom = FirebaseDatabase.getInstance().getReference("latest-messages/$toId/$fromId")
+        lastTo.setValue(lastMessageTo)
+        lastFrom.setValue(lastMessageFrom)
 
     }
 

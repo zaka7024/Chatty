@@ -1,6 +1,8 @@
 package com.freshie.chatty.items
 
 import android.content.Context
+import com.daimajia.androidanimations.library.Techniques
+import com.daimajia.androidanimations.library.YoYo
 import com.freshie.chatty.R
 import com.freshie.chatty.models.Language
 import com.xwray.groupie.GroupieViewHolder
@@ -22,6 +24,9 @@ class LanguageItem  (var name :String , var icon:Int, val language: Language
                 viewHolder.itemView.language_item_name.setTextColor(color)
             }
         }
+
+        YoYo.with(Techniques.SlideInUp).duration(400)
+            .playOn(viewHolder.itemView)
     }
 
     override fun getLayout(): Int {

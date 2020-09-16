@@ -19,6 +19,8 @@ import com.freshie.chatty.fragments.viewmodels.DiscoverViewModel
 import com.freshie.chatty.fragments.viewmodels.DiscoverViewModelFactory
 import com.google.android.gms.location.*
 import com.google.android.gms.maps.model.LatLng
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 import kotlinx.android.synthetic.main.fragment_dicscover.*
 import timber.log.Timber
 import java.util.Observer
@@ -43,6 +45,12 @@ class DiscoverFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        if (Firebase.auth.currentUser?.uid == null) {
+            map_tip.visibility = View.VISIBLE
+            map_tip_text.visibility = View.VISIBLE
+            return
+        }
 
         val discoverViewModelFactory  = DiscoverViewModelFactory(requireContext())
         val discoverViewModel = ViewModelProviders.of(this, discoverViewModelFactory)

@@ -3,18 +3,20 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:background="@color/blue"
+    android:padding="2dp"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
     <com.makeramen.roundedimageview.RoundedImageView
         android:id="@+id/chat_item_user_image"
-        android:layout_width="70dp"
-        android:layout_height="70dp"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:padding="4dp"
+        android:src="@drawable/iconfinder_profle_1055000"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:riv_oval="true"
-        tools:src="@tools:sample/avatars" />
+        app:riv_oval="true" />
 
     <TextView
         android:id="@+id/chat_item_username"
@@ -23,7 +25,8 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:textColor="@color/design_default_color_on_secondary"
-        android:textSize="14sp"
+        android:textSize="18sp"
+        android:textStyle="bold"
         app:layout_constraintStart_toEndOf="@+id/chat_item_user_image"
         app:layout_constraintTop_toTopOf="@+id/chat_item_user_image"
         tools:text="Ibrahim Alatoom" />

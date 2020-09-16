@@ -17,4 +17,34 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.0" />
 
+    <com.makeramen.roundedimageview.RoundedImageView
+        android:id="@+id/map_tip"
+        android:layout_width="0dp"
+        android:layout_height="120dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:background="@drawable/rounded_bg"
+        android:padding="8dp"
+        android:visibility="gone"
+        android:backgroundTint="@color/darkBlue"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/map_tip_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Please SingIn to communicate with people and makes friends  "
+        android:textAlignment="center"
+        android:textAllCaps="true"
+        android:textColor="@color/white"
+        android:textSize="20sp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@+id/map_tip"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/map_tip"
+        app:layout_constraintTop_toTopOf="@+id/map_tip" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
