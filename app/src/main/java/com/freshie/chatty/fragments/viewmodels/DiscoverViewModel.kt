@@ -118,8 +118,11 @@ class DiscoverViewModel(var context: Context) : ViewModel(), OnMapReadyCallback,
                         val user = (db.collection("users")
                             .whereEqualTo("id", onlineUser.id).limit(1).get()
                             .addOnSuccessListener {
+                                if(it.documents.isEmpty() || it.documents.first() == null) return@addOnSuccessListener
                                 val user = it.documents.first().toObject<User>()
-                                val onlineMotherLanguage = user?.motherLanguage
+
+                                if (user?.motherLanguage == null) return@addOnSuccessListener
+                                val onlineMotherLanguage = user.motherLanguage
 
                                 val iconId = getLanguageIcon(onlineMotherLanguage!!)
                                 var bitmap = BitmapFactory.decodeResource(context.resources, iconId)
@@ -137,7 +140,6 @@ class DiscoverViewModel(var context: Context) : ViewModel(), OnMapReadyCallback,
                                 )
                                 marker.tag = onlineUser
                                 markers.add(marker)
-
                             })
                         users.add(onlineUser)
                     }

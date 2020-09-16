@@ -48,6 +48,11 @@ class ProfileFragment : Fragment() {
             return
         }
 
+        //
+        sign_out_btn.setOnClickListener {
+            Firebase.auth.signOut()
+        }
+
         val profileViewModel = ViewModelProviders.of(this)
             .get(ProfileViewModel::class.java)
 

@@ -22,8 +22,6 @@ import com.google.android.gms.maps.model.LatLng
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import kotlinx.android.synthetic.main.fragment_dicscover.*
-import timber.log.Timber
-import java.util.Observer
 
 class DiscoverFragment : Fragment() {
     private lateinit var fusedLocationClient: FusedLocationProviderClient
@@ -95,7 +93,6 @@ class DiscoverFragment : Fragment() {
     private fun moveCameraToLastPosition(discoverViewModel: DiscoverViewModel) {
         // Get last user location
         fusedLocationClient.lastLocation.addOnSuccessListener(requireActivity()) { location ->
-            Timber.i("Last Location: $location")
             if(location != null){
                 val latLng = LatLng(location.latitude, location.longitude)
                 discoverViewModel.moveMapToLocation(latLng)
