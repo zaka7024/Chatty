@@ -8,8 +8,7 @@ import com.google.mlkit.nl.translate.Translator
 import com.xwray.groupie.GroupieViewHolder
 import com.xwray.groupie.Item
 import kotlinx.android.synthetic.main.message_item_receiver.view.*
-import kotlinx.android.synthetic.main.message_item_receiver.view.tans_messge_item_receiver
-import kotlinx.android.synthetic.main.message_item_sender.view.*
+import kotlinx.android.synthetic.main.message_item_receiver.view.message_receiver_item_translated_text
 
 
 class ChatReceiverItem(var message: Message, var translator: Translator): Item<GroupieViewHolder>(){
@@ -24,7 +23,7 @@ class ChatReceiverItem(var message: Message, var translator: Translator): Item<G
                     .addOnSuccessListener { translatedText ->
                         // Translation successful.
                         Log.i("chatItem", "translated: $translatedText")
-                        viewHolder.itemView.tans_messge_item_receiver.text = translatedText
+                        viewHolder.itemView.message_receiver_item_translated_text.text = translatedText
                     }
             }
     }

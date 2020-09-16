@@ -19,7 +19,7 @@
         app:riv_oval="true" />
 
     <TextView
-        android:id="@+id/message_item_text"
+        android:id="@+id/message_sender_item_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -30,7 +30,7 @@
         app:layout_constraintTop_toTopOf="@+id/sender_item_user_image" />
 
     <TextView
-        android:id="@+id/tans_messge_item_receiver"
+        android:id="@+id/message_sender_item_translated_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="4dp"
@@ -38,18 +38,18 @@
         android:textColor="@color/design_default_color_on_secondary"
         android:textSize="14sp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/message_item_text"
-        app:layout_constraintTop_toBottomOf="@+id/message_item_text"
+        app:layout_constraintStart_toStartOf="@+id/message_sender_item_text"
+        app:layout_constraintTop_toBottomOf="@+id/message_sender_item_text"
         app:layout_constraintVertical_bias="0.51" />
 
     <ImageView
-        android:id="@+id/message_item_voice"
+        android:id="@+id/message_sender_item_voice"
         android:layout_width="30dp"
         android:layout_height="30dp"
         android:layout_marginStart="8dp"
-        app:layout_constraintBottom_toBottomOf="@+id/tans_messge_item_receiver"
-        app:layout_constraintStart_toEndOf="@+id/tans_messge_item_receiver"
-        app:layout_constraintTop_toTopOf="@+id/tans_messge_item_receiver"
+        app:layout_constraintBottom_toBottomOf="@+id/message_sender_item_translated_text"
+        app:layout_constraintStart_toEndOf="@+id/message_sender_item_translated_text"
+        app:layout_constraintTop_toTopOf="@+id/message_sender_item_translated_text"
         app:srcCompat="@drawable/ic_baseline_volume_up_24"
         app:tint="@color/darkBlue" />
 </androidx.constraintlayout.widget.ConstraintLayout>

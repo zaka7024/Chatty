@@ -7,6 +7,7 @@ import com.freshie.chatty.models.Language
 import com.freshie.chatty.models.Message
 import com.freshie.chatty.models.User
 import com.google.firebase.auth.ktx.auth
+import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.firestore.ktx.toObject
@@ -49,6 +50,9 @@ class ChatViewModel: ViewModel() {
             withContext(Dispatchers.Main) {
                 _currentUser.value = getCurrentUser()
                 setSourceLanguage(_currentUser.value?.motherLanguage!!)
+
+                // get friend user
+                setReceiverId(receiverId.value!!)
             }
         }
     }
@@ -57,7 +61,6 @@ class ChatViewModel: ViewModel() {
         receiverId.value = id
 
         // get the friend user
-
         GlobalScope.launch {
             withContext(Dispatchers.Main) {
                 _friendUser.value = getFriendUser()
@@ -97,6 +100,12 @@ class ChatViewModel: ViewModel() {
         db.collection("messages/$fromId/$toId").add(message)
 
         db.collection("messages/$toId/$fromId").add(message)
+
+        val lastTo = FirebaseDatabase.getInstance().getReference("latest-messages/$fromId/$toId")
+        val lastFrom = FirebaseDatabase.getInstance().getReference("latest-messages/$fromId/$toId")
+        lastTo.setValue(message)
+        lastFrom.setValue(message)
+
     }
 
     fun getChatMessages() {

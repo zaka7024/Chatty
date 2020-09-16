@@ -12,10 +12,12 @@ import com.freshie.chatty.R
 import com.freshie.chatty.fragments.viewmodels.ChatViewModel
 import com.freshie.chatty.items.ChatReceiverItem
 import com.freshie.chatty.items.ChatSenderItem
+import com.freshie.chatty.models.Language
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import com.google.mlkit.nl.translate.TranslateLanguage
 import com.google.mlkit.nl.translate.Translation
+import com.google.mlkit.nl.translate.Translator
 import com.google.mlkit.nl.translate.TranslatorOptions
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.GroupieViewHolder
@@ -23,6 +25,8 @@ import kotlinx.android.synthetic.main.fragment_chat.*
 
 class ChatFragment : Fragment() {
     private val adapter = GroupAdapter<GroupieViewHolder>()
+    private lateinit var translator: Translator
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
     }
@@ -42,27 +46,33 @@ class ChatFragment : Fragment() {
         val chatViewModel = ViewModelProviders.of(this)
             .get(ChatViewModel::class.java)
 
-        // Translator
-        // Create an English-Arabic translator:
-        val options = TranslatorOptions.Builder()
-            .setSourceLanguage(TranslateLanguage.ENGLISH)
-            .setTargetLanguage(TranslateLanguage.ARABIC)
-            .build()
-        val translator = Translation.getClient(options)
-
-        // test
-        chatViewModel.sourceLanguage.observe(viewLifecycleOwner, {
-            Log.i("chat", "source lang: $it")
-        })
-
-        chatViewModel.targetLanguage.observe(viewLifecycleOwner, {
-            Log.i("chat", "target  lang: $it")
-        })
-
-
         // Set receiver id
-        chatViewModel.setReceiverId(args.receiver)
-        chatViewModel.getChatMessages()
+            chatViewModel.receiverId.value = args.receiver
+
+        Log.i("chat", "Current user id: ${Firebase.auth.currentUser?.uid}")
+        Log.i("chat", "Target user id: ${args.receiver}")
+
+        // Check if the two languages ready
+        chatViewModel.targetLanguage.observe(viewLifecycleOwner, {
+            targetLanguage ->
+
+            if(targetLanguage != null) {
+                // create the translator
+                // Translator
+                // Create an English-Arabic translator:
+                val mother = getTranslateLanguage(chatViewModel.sourceLanguage.value!!)
+                val target = getTranslateLanguage(chatViewModel.targetLanguage.value!!)
+
+                val options = TranslatorOptions.Builder()
+                    .setSourceLanguage(target)
+                    .setTargetLanguage(mother)
+                    .build()
+                translator = Translation.getClient(options)
+
+                chatViewModel.getChatMessages()
+            }
+        })
+
 
         // send a message
         chat_send_icon.setOnClickListener {
@@ -75,10 +85,11 @@ class ChatFragment : Fragment() {
             chat_edittext.text.clear()
         }
 
+        // Create the adapter
         initChatRv()
 
-        val uid = Firebase.auth.uid
         // Listen to the chat messages
+        val uid = Firebase.auth.uid
         chatViewModel.chatMessages.observe(viewLifecycleOwner, {
             adapter.clear()
             it.forEach { message ->
@@ -90,6 +101,14 @@ class ChatFragment : Fragment() {
             }
             chat_rv.scrollToPosition(adapter.itemCount - 1)
         })
+    }
+
+    private fun getTranslateLanguage(language: Language): String{
+        return when(language){
+            Language.Arabic -> TranslateLanguage.ARABIC
+            Language.English -> TranslateLanguage.ENGLISH
+            Language.France -> TranslateLanguage.FRENCH
+        }
     }
 
     private fun initChatRv(){

@@ -2,6 +2,7 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:background="@color/blue"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
@@ -34,5 +35,5 @@
         android:layout_marginTop="8dp"
         app:layout_constraintStart_toStartOf="@+id/chat_item_username"
         app:layout_constraintTop_toBottomOf="@+id/chat_item_username"
-        tools:text="hello how are yuo?" />
+        android:text="hello how are yuo?" />
 </androidx.constraintlayout.widget.ConstraintLayout>

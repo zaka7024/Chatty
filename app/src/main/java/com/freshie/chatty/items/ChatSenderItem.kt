@@ -13,17 +13,17 @@ import kotlinx.android.synthetic.main.message_item_sender.view.*
 class ChatSenderItem(var message: Message, var translator: Translator) :Item<GroupieViewHolder>(){
     override fun bind(viewHolder: GroupieViewHolder, position: Int) {
 
-        viewHolder.itemView.message_item_text.text = message.text
+        viewHolder.itemView.message_sender_item_text.text = message.text
 
-        var conditions = DownloadConditions.Builder()
+        val conditions = DownloadConditions.Builder()
             .build()
         translator.downloadModelIfNeeded(conditions)
             .addOnSuccessListener {
                 translator.translate(message.text)
                     .addOnSuccessListener { translatedText ->
                         // Translation successful.
-                        Log.i("chatItem", "translated: $translatedText")
-                        viewHolder.itemView.tans_messge_item_receiver.text = translatedText
+                        Log.i("chatItem", "text:${message.text} translated: $translatedText")
+                        viewHolder.itemView.message_sender_item_translated_text.text = translatedText
                     }
             }
     }
@@ -31,9 +31,4 @@ class ChatSenderItem(var message: Message, var translator: Translator) :Item<Gro
     override fun getLayout(): Int {
         return R.layout.message_item_sender
     }
-
-    fun translate() {
-
-    }
-
 }
